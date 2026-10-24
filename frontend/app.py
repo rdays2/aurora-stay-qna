@@ -131,7 +131,7 @@ if st.button("Submit", type="primary"):
                 else:
 
                     st.subheader("Answer")
-                    st.write(result["answer"])
+                    st.write(result["answer"].replace("$", "\\$"))
 
                     st.subheader("Supporting sources")
                     for i, chunk in enumerate(result["relevant_chunks"], start=1):
@@ -147,7 +147,7 @@ if st.button("Submit", type="primary"):
                         section = meta.get("section", "Unknown section")
 
                         with st.expander(f"Source {i}: {doc} – {section}"):
-                            st.write(text)
+                            st.write(text.replace("$", "\\$").replace("#", "\\#"))
 
             else:
                 st.error(
