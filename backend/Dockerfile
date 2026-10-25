@@ -7,7 +7,7 @@ COPY . .
 RUN pip install --no-cache-dir --upgrade pip
 
 RUN pip install --no-cache-dir \
-    torch \
+    torch==2.14.1 \
     --index-url https://download.pytorch.org/whl/cpu
 
 RUN pip install --no-cache-dir -r requirements.txt
@@ -28,3 +28,6 @@ ENV TRANSFORMERS_OFFLINE=1
 ENV HF_HUB_OFFLINE=1
 
 CMD ["gunicorn", "-w", "1", "--timeout", "120", "-b", "0.0.0.0:7860", "app:rag_api"]
+
+# Document the port the API listens on
+EXPOSE 7860
