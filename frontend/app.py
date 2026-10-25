@@ -114,7 +114,7 @@ if st.button("Submit", type="primary"):
             with st.spinner("Thinking…"):
                 response = requests.post(
                     f"{BACKEND_URL}{endpoint}",
-                    json=payload
+                    json=payload, timeout=120
                 )
 
             if response.status_code == 200:
@@ -150,10 +150,12 @@ if st.button("Submit", type="primary"):
                             st.write(text.replace("$", "\\$").replace("#", "\\#"))
 
             else:
-                st.error(
-                    f"Unable to get a response from the RAG API. "
-                    f"Status code: {response.status_code}"
-                )
+                # Show the backend's own error message if it sent one
+                try:
+                    message = response.json().get("error", "Unknown error")
+                except ValueError:
+                    message = "Unknown error"
+                st.error(f"{message} (status code: {response.status_code})")
 
         except requests.exceptions.RequestException:
             st.error(
